@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <!--Display Purpose-->
+
+        <f:view>
+            <h:form>
+                <p:commandButton 
+                    value="Add New Student"
+                    oncomplete="PF('registration').show()"/>
+                <p:dataTable value="#{studentBean.getAllStudents()}" var="student">
+                    <p:column headerText="Student Id">
+                        <h:outputText value="#{student.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Student Name">
+                        <h:outputText value="#{student.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Student Address">
+                        <h:outputText value="#{student.address}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Update">
+                        <p:commandButton 
+                            value="Update"
+                            actionListener="#{studentBean.changeStudent(student)}"
+                            ajax="true"
+                            update=":stdetails"
+                            oncomplete="PF('update').show()"/>
+                    </p:column>
+                    
+                    <p:column headerText="Delete">
+                        <p:commandButton 
+                            value="Delete"
+                            action="#{studentBean.deleteStudent(student)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            
+            <!--Registration Purpose-->
+            <p:dialog
+                header="New Registration Form"
+                widgetVar="registration">
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Name" for="name"/>
+                        <p:inputText value="#{studentBean.student.name}" id="name"/>
+                        
+                        <p:outputLabel value="Address" for="address"/>
+                        <p:inputText value="#{studentBean.student.address}" id="address"/>
+                        
+                        <h:inputHidden/>
+                        <p:commandButton value="Save" action="#{studentBean.addStudent()}"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            
+            <!--Update Purpose-->
+            <p:dialog
+                id="stdetails"
+                header="Update Form"
+                widgetVar="update">
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Name" for="name"/>
+                        <p:inputText value="#{studentBean.student.name}" id="name"/>
+                        
+                        <p:outputLabel value="Address" for="address"/>
+                        <p:inputText value="#{studentBean.student.address}" id="address"/>
+                        
+                        <h:inputHidden/>
+                        <p:commandButton value="Update" action="#{studentBean.updateStudent(studentBean.student)}"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </f:view>
+    </h:body>
+</html>
+
